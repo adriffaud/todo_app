@@ -80,6 +80,13 @@ defmodule TodoAppWeb.Router do
       on_mount: [{TodoAppWeb.UserAuth, :mount_current_user}] do
       live "/users/confirm/:token", UserConfirmationLive, :edit
       live "/users/confirm", UserConfirmationInstructionsLive, :new
+
+      live "/todos", TodoLive.Index, :index
+      live "/todos/new", TodoLive.Index, :new
+      live "/todos/:id/edit", TodoLive.Index, :edit
+
+      live "/todos/:id", TodoLive.Show, :show
+      live "/todos/:id/show/edit", TodoLive.Show, :edit
     end
   end
 end
