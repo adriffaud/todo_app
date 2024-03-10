@@ -13,12 +13,14 @@ defmodule TodoApp.Todos do
 
   ## Examples
 
-      iex> list_todos()
+      iex> list_todos(1)
       [%Todo{}, ...]
 
   """
-  def list_todos do
-    Repo.all(Todo)
+  def list_todos(user_id) do
+    Todo
+    |> where([t], t.user_id == ^user_id)
+    |> Repo.all()
   end
 
   @doc """

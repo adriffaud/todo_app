@@ -6,7 +6,8 @@ defmodule TodoAppWeb.TodoLive.Index do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :todos, Todos.list_todos())}
+    %{assigns: %{current_user: %{id: user_id}}} = socket
+    {:ok, stream(socket, :todos, Todos.list_todos(user_id))}
   end
 
   @impl true
