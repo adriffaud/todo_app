@@ -13,7 +13,7 @@ defmodule TodoApp.Todos.Todo do
   @doc false
   def changeset(todo, attrs) do
     todo
-    |> cast(attrs, [:text, :done])
-    |> validate_required([:text, :done])
+    |> cast(attrs, [:text, :done, :user_id])
+    |> validate_required([:text, :done, :user_id])
   end
 end

@@ -9,7 +9,6 @@ defmodule TodoAppWeb.TodoLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage todo records in your database.</:subtitle>
       </.header>
 
       <.simple_form
@@ -19,8 +18,7 @@ defmodule TodoAppWeb.TodoLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:text]} type="text" label="Text" />
-        <.input field={@form[:done]} type="checkbox" label="Done" />
+        <.input field={@form[:text]} type="text" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Todo</.button>
         </:actions>
@@ -69,14 +67,12 @@ defmodule TodoAppWeb.TodoLive.FormComponent do
   end
 
   defp save_todo(socket, :new, todo_params) do
-    case Todos.create_todo(todo_params) do
+    params = Map.put(todo_params, "user_id", socket.assigns.user_id)
+
+    case Todos.create_todo(params) do
       {:ok, todo} ->
         notify_parent({:saved, todo})
-
-        {:noreply,
-         socket
-         |> put_flash(:info, "Todo created successfully")
-         |> push_patch(to: socket.assigns.patch)}
+        {:noreply, socket |> push_patch(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}
