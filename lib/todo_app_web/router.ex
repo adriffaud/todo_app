@@ -20,15 +20,13 @@ defmodule TodoAppWeb.Router do
   scope "/", TodoAppWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
-
     live_session :authenticated, on_mount: [{TodoAppWeb.UserAuth, :ensure_authenticated}] do
-      live "/todos", TodoLive.Index, :index
-      live "/todos/new", TodoLive.Index, :new
-      live "/todos/:id/edit", TodoLive.Index, :edit
+      live "/", TodoLive.Index, :index
+      live "/new", TodoLive.Index, :new
+      live "/:id/edit", TodoLive.Index, :edit
 
-      live "/todos/:id", TodoLive.Show, :show
-      live "/todos/:id/show/edit", TodoLive.Show, :edit
+      live "/:id", TodoLive.Show, :show
+      live "/:id/show/edit", TodoLive.Show, :edit
     end
   end
 

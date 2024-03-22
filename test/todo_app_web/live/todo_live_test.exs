@@ -17,19 +17,19 @@ defmodule TodoAppWeb.TodoLiveTest do
     setup [:create_todo]
 
     test "lists all todos", %{conn: conn, todo: todo} do
-      {:ok, _index_live, html} = live(conn, ~p"/todos")
+      {:ok, _index_live, html} = live(conn, ~p"/")
 
       assert html =~ "Listing Todos"
       assert html =~ todo.text
     end
 
     test "saves new todo", %{conn: conn} do
-      {:ok, index_live, _html} = live(conn, ~p"/todos")
+      {:ok, index_live, _html} = live(conn, ~p"/")
 
       assert index_live |> element("a", "New Todo") |> render_click() =~
                "New Todo"
 
-      assert_patch(index_live, ~p"/todos/new")
+      assert_patch(index_live, ~p"/new")
 
       assert index_live
              |> form("#todo-form", todo: @invalid_attrs)
@@ -39,7 +39,7 @@ defmodule TodoAppWeb.TodoLiveTest do
              |> form("#todo-form", todo: @create_attrs)
              |> render_submit()
 
-      assert_patch(index_live, ~p"/todos")
+      assert_patch(index_live, ~p"/")
 
       html = render(index_live)
       assert html =~ "Todo created successfully"
@@ -47,12 +47,12 @@ defmodule TodoAppWeb.TodoLiveTest do
     end
 
     test "updates todo in listing", %{conn: conn, todo: todo} do
-      {:ok, index_live, _html} = live(conn, ~p"/todos")
+      {:ok, index_live, _html} = live(conn, ~p"/")
 
       assert index_live |> element("#todos-#{todo.id} a", "Edit") |> render_click() =~
                "Edit Todo"
 
-      assert_patch(index_live, ~p"/todos/#{todo}/edit")
+      assert_patch(index_live, ~p"/#{todo}/edit")
 
       assert index_live
              |> form("#todo-form", todo: @invalid_attrs)
@@ -62,7 +62,7 @@ defmodule TodoAppWeb.TodoLiveTest do
              |> form("#todo-form", todo: @update_attrs)
              |> render_submit()
 
-      assert_patch(index_live, ~p"/todos")
+      assert_patch(index_live, ~p"/")
 
       html = render(index_live)
       assert html =~ "Todo updated successfully"
@@ -70,7 +70,7 @@ defmodule TodoAppWeb.TodoLiveTest do
     end
 
     test "deletes todo in listing", %{conn: conn, todo: todo} do
-      {:ok, index_live, _html} = live(conn, ~p"/todos")
+      {:ok, index_live, _html} = live(conn, ~p"/")
 
       assert index_live |> element("#todos-#{todo.id} a", "Delete") |> render_click()
       refute has_element?(index_live, "#todos-#{todo.id}")
@@ -81,19 +81,19 @@ defmodule TodoAppWeb.TodoLiveTest do
     setup [:create_todo]
 
     test "displays todo", %{conn: conn, todo: todo} do
-      {:ok, _show_live, html} = live(conn, ~p"/todos/#{todo}")
+      {:ok, _show_live, html} = live(conn, ~p"/#{todo}")
 
       assert html =~ "Show Todo"
       assert html =~ todo.text
     end
 
     test "updates todo within modal", %{conn: conn, todo: todo} do
-      {:ok, show_live, _html} = live(conn, ~p"/todos/#{todo}")
+      {:ok, show_live, _html} = live(conn, ~p"/#{todo}")
 
       assert show_live |> element("a", "Edit") |> render_click() =~
                "Edit Todo"
 
-      assert_patch(show_live, ~p"/todos/#{todo}/show/edit")
+      assert_patch(show_live, ~p"/#{todo}/show/edit")
 
       assert show_live
              |> form("#todo-form", todo: @invalid_attrs)
@@ -103,7 +103,7 @@ defmodule TodoAppWeb.TodoLiveTest do
              |> form("#todo-form", todo: @update_attrs)
              |> render_submit()
 
-      assert_patch(show_live, ~p"/todos/#{todo}")
+      assert_patch(show_live, ~p"/#{todo}")
 
       html = render(show_live)
       assert html =~ "Todo updated successfully"
