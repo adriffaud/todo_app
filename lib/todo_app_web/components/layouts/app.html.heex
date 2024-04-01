@@ -10,9 +10,12 @@
     </div>
   </div>
 </header>
-<main class="px-4 py-20 sm:px-6 lg:px-8">
-  <div class="mx-auto max-w-2xl">
+<main class="max-w-xl min-w-60 m-auto">
+  <section class="bg-white shadow-2xl mt-32 mb-10 mx-0 relative">
     <.flash_group flash={@flash} />
     <%= @inner_content %>
-  </div>
+  </section>
+  <footer class="text-slate-700 text-xs mt-16 mb-0 mx-auto text-center drop-shadow-sm">
+    <p>Double click to edit a todo</p>
+  </footer>
 </main>
