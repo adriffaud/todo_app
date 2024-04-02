@@ -15,6 +15,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := http.NewServeMux()
 	router.HandleFunc("/", index)
+	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("assets"))))
 
 	server := &http.Server{
 		Addr:         ":8080",
